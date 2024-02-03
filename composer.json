@@ -1,0 +1,10 @@
+{
+    "name": "test/blog-php",
+    "description": "Blog on PHP and MySQL",
+    "type": "project",
+    "minimum-stability": "stable",
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.6"
+    }
+}
