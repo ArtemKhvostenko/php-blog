@@ -1,10 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Blog;
 
 use PDO;
+use PDOException;
 
 class PostMapper
 {
@@ -26,10 +26,25 @@ class PostMapper
 
         try {
             $result = $statement->fetchObject(Post::class);
-        } catch (\PDOException $exception) {
+        } catch (PDOException $exception) {
             die($exception->getMessage());
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $orderBy
+     * @return array|null
+     */
+    public function getList(string $orderBy = 'DESC'): ?array
+    {
+        if (!in_array($orderBy, ['ASC', 'DESC'])) {
+            throw new \Exception('This order is not sported');
+        }
+        $statement = $this->connection->prepare('SELECT * FROM post ORDER BY created_at ' . $orderBy);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_CLASS, Post::class);
     }
 }
